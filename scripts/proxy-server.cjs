@@ -14,7 +14,7 @@ app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 
 app.post('/api/ocr', async (req, res) => {
-  const apiKey = process.env.VITE_GEMINI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: 'Server configuration error: Missing API Key' });
   }
