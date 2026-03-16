@@ -1,0 +1,202 @@
+import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import { Mic, MicOff, RefreshCw, FileText, Download, Volume2, UserCheck, Share2, Printer } from 'lucide-react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+
+
+interface EditorModuleProps {
+  content: string;
+  onUpdateContent: (id: string, newContent: string) => void;
+  onRegenerate: () => void;
+}
+
+const EditorModule: React.FC<EditorModuleProps> = ({ content, onUpdateContent, onRegenerate }) => {
+  const [isRecording, setIsRecording] = useState(false);
+  const [isSynthesizing, setIsSynthesizing] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const contentRef = React.useRef<HTMLDivElement>(null);
+
+  const handleExportPDF = async () => {
+    if (!contentRef.current) return;
+    setIsExporting(true);
+    try {
+      const canvas = await html2canvas(contentRef.current, { scale: 2 });
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('数学课件.pdf');
+    } catch (err) {
+      console.error('Export failed', err);
+    }
+    setIsExporting(false);
+  };
+
+  const handleExportImage = async () => {
+    if (!contentRef.current) return;
+    setIsExporting(true);
+    try {
+      const canvas = await html2canvas(contentRef.current, { scale: 2 });
+      const link = document.createElement('a');
+      link.download = '数学课件长图.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (err) {
+      console.error('Export failed', err);
+    }
+    setIsExporting(false);
+  };
+
+  const toggleRecording = () => {
+    setIsRecording(!isRecording);
+    if (isRecording) {
+      setTimeout(() => {
+        onUpdateContent("section-1", content + "\n\n> **[AI 纠错记录]**：根据您的语音校对“分母写错了”，已修正结果。");
+      }, 1000);
+    }
+  };
+
+  const handleSpeak = () => {
+    if (isSynthesizing) {
+      window.speechSynthesis.cancel();
+      setIsSynthesizing(false);
+      return;
+    }
+    setIsSynthesizing(true);
+    const utterance = new SpeechSynthesisUtterance(content.replace(/[\$\#\*\-\[\]]/g, ''));
+    utterance.lang = 'zh-CN';
+    utterance.onend = () => setIsSynthesizing(false);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  return (
+    <section className="max-w-6xl mx-auto my-10 animate-fade-in px-4">
+      <div className="flex flex-col lg:flex-row gap-8 items-start">
+        {/* Left Side: Document Preview (Paper Style) */}
+        <div className="flex-1 w-full">
+          <div className="bg-white rounded-[2rem] shadow-2xl overflow-hidden border border-slate-200 flex flex-col min-h-[80vh] relative">
+            <div className="bg-slate-50/80 backdrop-blur-md px-8 py-6 flex items-center justify-between border-b border-slate-100 sticky top-0 z-10">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-brand-primary/10 rounded-lg text-brand-primary">
+                  <FileText size={20} strokeWidth={2.5} />
+                </div>
+                <span className="font-black text-slate-800 tracking-tight">预览您的电子课件</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={handleSpeak}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold transition-all ${
+                    isSynthesizing 
+                      ? 'bg-brand-primary text-white shadow-lg animate-pulse' 
+                      : 'bg-white text-slate-600 hover:bg-brand-primary hover:text-white border border-slate-200 shadow-sm'
+                  }`}
+                >
+                  <Volume2 size={18} />
+                  <span>{isSynthesizing ? '正在朗读...' : '试听读法'}</span>
+                </button>
+              </div>
+            </div>
+            
+            <div 
+               className="p-12 lg:p-20 overflow-y-auto bg-[url('https://www.transparenttextures.com/patterns/lined-paper.png')] bg-white" 
+               ref={contentRef}
+            >
+              <div className="max-w-3xl mx-auto prose prose-slate prose-lg lg:prose-xl">
+                <ReactMarkdown 
+                  remarkPlugins={[remarkMath]} 
+                  rehypePlugins={[rehypeKatex]}
+                  components={{
+                    h1: ({node, ...props}) => <h1 className="text-4xl font-extrabold text-brand-primary text-center mb-12" {...props} />,
+                    h2: ({node, ...props}) => <h2 className="text-2xl font-bold text-slate-800 mt-12 mb-6 border-b-2 border-brand-primary/20 pb-2" {...props} />,
+                    p: ({node, ...props}) => <p className="mb-6 text-slate-700 leading-relaxed font-medium text-lg lg:text-xl" {...props} />,
+                    strong: ({node, ...props}) => <strong className="text-brand-primary font-black bg-brand-primary/5 px-1.5 rounded" {...props} />,
+                    blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-brand-accent bg-brand-accent/5 p-4 rounded-r-xl italic" {...props} />,
+                  }}
+                >
+                  {content}
+                </ReactMarkdown>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side: Tools (Docked) */}
+        <div className="w-full lg:w-80 flex flex-col gap-6 sticky lg:top-32">
+          {/* Dialect Voice Assistant */}
+          <div className="bg-brand-accent rounded-[2rem] p-8 shadow-xl text-white relative overflow-hidden group">
+             {/* Animation patterns */}
+             <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+             
+             <h3 className="font-black mb-4 flex items-center gap-3 text-lg">
+                <UserCheck size={24} />
+                <span>岳阳方言智能校对</span>
+             </h3>
+             <p className="text-sm text-white/80 mb-8 leading-relaxed font-medium">
+                点击下方按钮并用家乡话对我说：<br />
+                “里个地方算错哒...”
+             </p>
+             
+             <button 
+              onClick={toggleRecording}
+              className={`w-full py-6 rounded-2xl flex flex-col items-center justify-center gap-3 transition-all shadow-2xl active:scale-95 ${
+                isRecording 
+                  ? 'bg-red-500 text-white ring-8 ring-red-500/20' 
+                  : 'bg-white text-brand-accent hover:bg-slate-50'
+              }`}
+            >
+              <div className={`p-4 rounded-full ${isRecording ? 'bg-white/20' : 'bg-brand-accent/10'}`}>
+                {isRecording ? <MicOff size={32} /> : <Mic size={32} />}
+              </div>
+              <span className="text-xs font-black uppercase tracking-widest">
+                {isRecording ? '请开始说话...' : '点击开始说话'}
+              </span>
+            </button>
+          </div>
+
+          {/* Export Tools */}
+          <div className="bg-slate-800 rounded-[2rem] p-8 shadow-xl text-white">
+            <h3 className="font-black mb-6 flex items-center gap-3 text-lg">
+              <Download size={24} className="text-brand-accent" />
+              <span>成果导出</span>
+            </h3>
+            <div className="space-y-4">
+              <button 
+                onClick={handleExportPDF}
+                disabled={isExporting}
+                className="w-full py-4 bg-brand-primary text-white rounded-[1.25rem] font-black flex items-center justify-center gap-3 hover:bg-brand-secondary transition-all shadow-lg active:scale-95 disabled:opacity-50"
+              >
+                {isExporting ? <RefreshCw className="animate-spin" size={20} /> : <Printer size={20} />}
+                <span>存为 PDF 打印版</span>
+              </button>
+              
+              <button 
+                onClick={handleExportImage}
+                disabled={isExporting}
+                className="w-full py-4 bg-white/10 text-white border border-white/20 rounded-[1.25rem] font-bold flex items-center justify-center gap-3 hover:bg-white/20 transition-all active:scale-95 disabled:opacity-50"
+              >
+                <Share2 size={18} />
+                <span>生成微信长图</span>
+              </button>
+            </div>
+          </div>
+
+          <button 
+            onClick={onRegenerate}
+            className="flex items-center justify-center gap-2 text-slate-400 hover:text-brand-primary py-4 px-6 rounded-2xl border border-dashed border-slate-200 hover:border-brand-primary transition-all font-bold text-sm bg-white"
+          >
+            <RefreshCw size={14} />
+            <span>不满意？重新识别全文</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default EditorModule;
+
