@@ -1,0 +1,20 @@
+{
+  "name": "functions",
+  "description": "手写宝 OCR proxy function",
+  "scripts": {
+    "build": "tsc"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-functions": "^6.0.0",
+    "@google/generative-ai": "^0.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "~5.6.3"
+  },
+  "private": true
+}

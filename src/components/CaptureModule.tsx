@@ -27,19 +27,19 @@ const CaptureModule: React.FC<CaptureModuleProps> = ({
   };
 
   return (
-    <section className="bg-white/70 backdrop-blur-xl rounded-[2.5rem] p-8 shadow-2xl border border-white/50 max-w-5xl mx-auto my-10 relative overflow-hidden">
+    <section className="bg-white/70 backdrop-blur-xl rounded-[2rem] p-5 shadow-2xl border border-white/50 max-w-5xl mx-auto my-4 relative overflow-hidden">
       {/* Decorative background flare */}
       <div className="absolute -top-24 -right-24 w-64 h-64 bg-brand-primary/5 rounded-full blur-3xl pointer-events-none" />
-      
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-6 border-b border-slate-100">
-        <div className="flex items-center gap-5">
-          <div className="bg-brand-primary text-white p-4 rounded-[1.25rem] shadow-lg shadow-brand-primary/20">
-            <Camera size={28} />
+
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100">
+        <div className="flex items-center gap-4">
+          <div className="bg-brand-primary text-white p-3 rounded-[1rem] shadow-lg shadow-brand-primary/20">
+            <Camera size={22} />
           </div>
           <div>
-            <h2 className="text-2xl font-black text-slate-800 tracking-tight">第一步：采集教案手稿</h2>
-            <p className="text-slate-500 text-sm font-medium flex items-center gap-1.5 mt-1">
-              <Info size={14} className="text-brand-accent" />
+            <h2 className="text-xl font-black text-slate-800 tracking-tight">第一步：采集教案手稿</h2>
+            <p className="text-slate-500 text-sm font-medium flex items-center gap-1.5 mt-0.5">
+              <Info size={13} className="text-brand-accent" />
               您可以一次上传多页，AI 会自动串联教学思路
             </p>
           </div>
@@ -47,18 +47,18 @@ const CaptureModule: React.FC<CaptureModuleProps> = ({
       </div>
 
       {images.length === 0 ? (
-        <div 
+        <div
           onClick={() => fileInputRef.current?.click()}
-          className="border-3 border-dashed border-slate-200 rounded-[2rem] py-20 flex flex-col items-center justify-center gap-6 cursor-pointer hover:border-brand-primary hover:bg-brand-primary/[0.02] transition-all group group bg-slate-50/50"
+          className="border-2 border-dashed border-slate-200 rounded-[1.5rem] py-8 flex flex-col items-center justify-center gap-4 cursor-pointer hover:border-brand-primary hover:bg-brand-primary/[0.02] transition-all group bg-slate-50/50"
         >
-          <div className="bg-white p-8 rounded-full shadow-xl group-hover:scale-110 transition-transform duration-500 border border-slate-100">
-            <UploadCloud size={64} className="text-brand-primary" strokeWidth={1.5} />
+          <div className="bg-white p-5 rounded-full shadow-xl group-hover:scale-110 transition-transform duration-500 border border-slate-100">
+            <UploadCloud size={44} className="text-brand-primary" strokeWidth={1.5} />
           </div>
           <div className="text-center">
-            <p className="text-xl font-bold text-slate-700">点击这里开始拍摄</p>
-            <p className="text-slate-400 mt-2 font-medium italic">或是从相册中选择您的手笔照片</p>
+            <p className="text-lg font-bold text-slate-700">点击这里开始拍摄</p>
+            <p className="text-slate-400 mt-1 text-sm font-medium italic">或是从相册中选择您的手笔照片</p>
           </div>
-          <div className="mt-4 px-6 py-2 bg-brand-primary text-white rounded-full font-bold shadow-lg shadow-brand-primary/20">
+          <div className="px-6 py-2 bg-brand-primary text-white rounded-full font-bold shadow-lg shadow-brand-primary/20">
              立即采集
           </div>
         </div>
@@ -83,7 +83,7 @@ const CaptureModule: React.FC<CaptureModuleProps> = ({
                     <X size={24} />
                   </button>
                 </div>
-                <div className="absolute top-4 left-4 bg-black/70 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg backdrop-blur-md border border-white/20">
+                <div className="absolute top-4 left-4 bg-black/70 text-white text-sm font-black uppercase tracking-widest px-3 py-1.5 rounded-lg backdrop-blur-md border border-white/20">
                    P.{index + 1}
                 </div>
               </motion.div>
@@ -111,11 +111,11 @@ const CaptureModule: React.FC<CaptureModuleProps> = ({
         onChange={handleFileChange}
       />
 
-      <div className="mt-6 flex flex-col items-center gap-6">
+      <div className="mt-4 flex flex-col items-center gap-3">
         <button
           onClick={onStartProcess}
           disabled={images.length === 0 || isProcessing}
-          className={`w-full max-w-md py-6 rounded-[1.5rem] flex items-center justify-center gap-4 text-xl font-black shadow-2xl transition-all relative overflow-hidden group ${
+          className={`w-full max-w-md py-4 rounded-[1.25rem] flex items-center justify-center gap-3 text-lg font-black shadow-2xl transition-all relative overflow-hidden group ${
             images.length > 0 && !isProcessing
               ? 'bg-brand-primary text-white hover:bg-brand-secondary active:scale-[0.98]'
               : 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
@@ -137,9 +137,9 @@ const CaptureModule: React.FC<CaptureModuleProps> = ({
             </>
           )}
         </button>
-        <div className="flex items-center gap-2 text-brand-primary/40 font-bold text-xs uppercase tracking-widest">
+        <div className="flex items-center gap-2 text-brand-primary/40 font-bold text-sm uppercase tracking-widest">
            <div className="h-[1px] w-8 bg-current" />
-           <span>Next-Gen Math OCR Engine</span>
+           <span>新一代数学识别引擎</span>
            <div className="h-[1px] w-8 bg-current" />
         </div>
       </div>

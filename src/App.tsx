@@ -3,7 +3,7 @@ import Header from './components/Header';
 import CaptureModule from './components/CaptureModule';
 import EditorModule from './components/EditorModule';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Info, Heart } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { performFaithfulOCR } from './utils/gemini_ocr';
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
       setGeneratedContent(result);
     } catch (error: any) {
       if (error.message.includes("API_KEY_MISSING")) {
-        alert("检测到未配置 Gemini API Key。请在项目根目录创建 .env 文件并设置 VITE_GEMINI_API_KEY，否则系统将只能演示，无法识别新图片。");
+        alert("检测到未配置 AI API Key。请在项目根目录创建 .env 文件并设置 VITE_GEMINI_API_KEY，否则系统将只能演示，无法识别新图片。");
       } else {
         alert("识别过程中出现错误：" + error.message);
       }
@@ -50,38 +50,7 @@ function App() {
       <Header />
       
       <main className="flex-1 pb-20 overflow-x-hidden">
-        {/* Hero Section */}
-        <section className="bg-brand-primary text-white pt-20 pb-40 px-6 relative overflow-hidden">
-          {/* Background decoration */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full">
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-accent/20 rounded-full blur-[120px] animate-pulse" />
-            <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-white/10 rounded-full blur-[80px] animate-pulse [animation-delay:-2s]" />
-          </div>
-
-          <div className="max-w-4xl mx-auto text-center relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <div className="inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full mb-8 border border-white/20 backdrop-blur-md">
-                <Sparkles size={16} className="text-brand-accent" />
-                <span className="text-xs font-black uppercase tracking-[0.2em]">Next-Gen Math AI</span>
-              </div>
-              <h2 className="text-5xl sm:text-7xl font-black mb-8 tracking-tighter leading-[1.1]">
-                将手稿，转化为<br />
-                <span className="text-brand-accent italic bg-clip-text">精美电子课件</span>
-              </h2>
-              <p className="text-xl sm:text-2xl text-white/70 max-w-2xl mx-auto mb-12 leading-relaxed font-medium">
-                深度适配岳阳方言校对，让老师的每一份智慧<br className="hidden sm:block" />
-                都能以最标准的形式走进课堂。
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Content Section with Negative Margin */}
-        <div className="-mt-16 px-4">
+        <div className="px-4 pt-6">
           <AnimatePresence mode="wait">
             {!generatedContent ? (
               <motion.div
@@ -122,8 +91,8 @@ function App() {
                         </div>
                       </div>
                       
-                      <h3 className="text-3xl font-black mb-4 tracking-tight">Gemini 2.5 深度创作中</h3>
-                      <p className="text-white/60 font-bold uppercase tracking-[0.2em] text-xs">正在为您整理数学手稿...</p>
+                      <h3 className="text-3xl font-black mb-4 tracking-tight">AI 深度创作中</h3>
+                      <p className="text-white/60 font-bold uppercase tracking-[0.2em] text-sm">正在为您整理数学手稿...</p>
                       
                       <div className="mt-12 w-64 h-1.5 bg-white/10 rounded-full overflow-hidden">
                          <motion.div 
@@ -137,21 +106,6 @@ function App() {
                   </motion.div>
                 )}
 
-                
-                {/* Feature highlights */}
-                <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-                  {[
-                    { icon: Sparkles, title: "智能公式识别", desc: "采用 Gemini 2.5 长上下文能力，多页手稿一次性精准转化 LaTeX。" },
-                    { icon: Info, title: "文字自动润色", desc: "保留您的教学思路，将口语化表达自动整理为规范的数学语言。" },
-                    { icon: Heart, title: "语音校对修正", desc: "听得懂您的岳阳家乡话，复杂修改动动嘴就能完成。" }
-                  ].map((f, i) => (
-                    <div key={i} className="bg-white/50 backdrop-blur-md p-6 rounded-3xl border border-white shadow-sm hover:shadow-md transition-shadow">
-                      <f.icon className="text-brand-accent mb-4" size={32} />
-                      <h3 className="font-bold text-slate-800 mb-2">{f.title}</h3>
-                      <p className="text-sm text-slate-500 leading-relaxed">{f.desc}</p>
-                    </div>
-                  ))}
-                </div>
               </motion.div>
             ) : (
               <motion.div
@@ -182,7 +136,7 @@ function App() {
 
       <footer className="bg-white border-t border-slate-100 py-8 px-4 text-center">
         <p className="text-slate-400 text-sm font-medium">
-          © 2026 湖南教师数学助手 · 用 AI 点亮教育智慧
+          © 2026 手写宝 · 用 AI 点亮教育智慧
         </p>
       </footer>
     </div>

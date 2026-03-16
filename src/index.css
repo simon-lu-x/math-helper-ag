@@ -66,6 +66,56 @@ body {
   overflow-x: auto;
 }
 
+/* Friendly Editor */
+.fe-editor { font-family: inherit; color: #374151; }
+.fe-line   { min-height: 1.6em; line-height: 1.8; }
+
+.fe-h1 {
+  font-size: 1.875rem;
+  font-weight: 900;
+  color: #004d40;
+  text-align: center;
+  margin: 0.5rem 0 1.5rem;
+}
+.fe-h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 1.5rem 0 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid rgba(0,77,64,0.15);
+}
+.fe-para { font-size: 1rem; margin-bottom: 0.25rem; }
+.fe-empty { height: 0.6rem; }
+.fe-li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+  font-size: 1.05rem;
+}
+.fe-num {
+  flex-shrink: 0;
+  min-width: 1.75rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+.fe-content { flex: 1; }
+
+/* Math chips — gray background signals "locked", not interactive */
+.math-chip {
+  display: inline-block;
+  background: #f1f5f9;
+  border-radius: 4px;
+  padding: 1px 4px;
+  margin: 0 2px;
+  cursor: not-allowed;
+  user-select: none;
+  vertical-align: middle;
+  pointer-events: none;
+  color: #475569;
+}
+
 /* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
