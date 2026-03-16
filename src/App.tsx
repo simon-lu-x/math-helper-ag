@@ -5,11 +5,13 @@ import EditorModule from './components/EditorModule';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import { performFaithfulOCR } from './utils/gemini_ocr';
+import { performQwenOCR } from './utils/qwen_ocr';
 
 function App() {
   const [images, setImages] = useState<string[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [generatedContent, setGeneratedContent] = useState<string | null>(null);
+  const [provider, setProvider] = useState<'gemini' | 'qwen'>('gemini');
 
   const handleAddImages = (newImages: string[]) => {
     setImages(prev => [...prev, ...newImages]);
@@ -23,11 +25,12 @@ function App() {
     if (images.length === 0) return;
     setIsProcessing(true);
     try {
-      const result = await performFaithfulOCR(images);
+      const result = await (provider === 'qwen' ? performQwenOCR(images) : performFaithfulOCR(images));
       setGeneratedContent(result);
     } catch (error: any) {
       if (error.message.includes("API_KEY_MISSING")) {
-        alert("检测到未配置 AI API Key。请在项目根目录创建 .env 文件并设置 VITE_GEMINI_API_KEY，否则系统将只能演示，无法识别新图片。");
+        const keyName = provider === 'qwen' ? 'VITE_QWEN_API_KEY' : 'VITE_GEMINI_API_KEY';
+        alert(`检测到未配置 AI API Key。请在项目根目录创建 .env 文件并设置 ${keyName}`);
       } else {
         alert("识别过程中出现错误：" + error.message);
       }
@@ -49,6 +52,23 @@ function App() {
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       <Header />
       
+      {/* Provider 切换 — 仅用于测试对比，确认效果后可移除 */}
+      <div className="flex justify-center gap-1 py-2 bg-slate-100 border-b border-slate-200 text-xs font-medium">
+        <span className="text-slate-400 self-center mr-1">识别引擎：</span>
+        <button
+          onClick={() => setProvider('gemini')}
+          className={`px-3 py-1 rounded-full transition-colors ${provider === 'gemini' ? 'bg-blue-600 text-white' : 'text-slate-500 hover:bg-slate-200'}`}
+        >
+          Gemini 2.5 Flash
+        </button>
+        <button
+          onClick={() => setProvider('qwen')}
+          className={`px-3 py-1 rounded-full transition-colors ${provider === 'qwen' ? 'bg-orange-500 text-white' : 'text-slate-500 hover:bg-slate-200'}`}
+        >
+          Qwen-VL-Max
+        </button>
+      </div>
+
       <main className="flex-1 pb-20 overflow-x-hidden">
         <div className="px-4 pt-6">
           <AnimatePresence mode="wait">
