@@ -229,7 +229,7 @@ const EditorModule: React.FC<EditorModuleProps> = ({ content, onUpdateContent, o
                 <div className="p-1.5 sm:p-2 bg-brand-primary/10 rounded-lg text-brand-primary">
                   <FileText size={18} strokeWidth={2.5} />
                 </div>
-                <span className="font-black text-slate-800 tracking-tight text-sm sm:text-base">预览您的电子课件</span>
+                <span className="font-black text-slate-800 tracking-tight text-sm sm:text-base">预览你的文档</span>
               </div>
             </div>
             
@@ -333,7 +333,7 @@ const EditorModule: React.FC<EditorModuleProps> = ({ content, onUpdateContent, o
             className="flex items-center justify-center gap-2 text-slate-400 hover:text-brand-primary py-4 px-6 rounded-2xl border border-dashed border-slate-200 hover:border-brand-primary transition-all font-bold text-sm bg-white"
           >
             <RefreshCw size={14} />
-            <span>不满意？重新识别全文</span>
+            <span>不满意？重新识别</span>
           </button>
         </div>
       </div>

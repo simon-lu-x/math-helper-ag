@@ -91,8 +91,8 @@ function App() {
                         </div>
                       </div>
                       
-                      <h3 className="text-3xl font-black mb-4 tracking-tight">AI 深度创作中</h3>
-                      <p className="text-white/60 font-bold uppercase tracking-[0.2em] text-sm">正在为您整理数学手稿...</p>
+                      <h3 className="text-3xl font-black mb-4 tracking-tight">AI 识别中</h3>
+                      <p className="text-white/60 font-bold uppercase tracking-[0.2em] text-sm">正在整理你的手写内容...</p>
                       
                       <div className="mt-12 w-64 h-1.5 bg-white/10 rounded-full overflow-hidden">
                          <motion.div 
@@ -125,7 +125,7 @@ function App() {
                     onClick={() => { setGeneratedContent(null); setImages([]); }}
                     className="text-slate-400 hover:text-brand-primary font-medium flex items-center gap-2 py-4 px-8"
                    >
-                     <span>← 返回采集新教案</span>
+                     <span>← 重新上传</span>
                    </button>
                 </div>
               </motion.div>
@@ -136,7 +136,7 @@ function App() {
 
       <footer className="bg-white border-t border-slate-100 py-8 px-4 text-center">
         <p className="text-slate-400 text-sm font-medium">
-          © 2026 手写宝 · 用 AI 点亮教育智慧
+          © 2026 手写宝 · 让每一页手写都值得被记住
         </p>
       </footer>
     </div>

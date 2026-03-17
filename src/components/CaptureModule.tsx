@@ -37,10 +37,10 @@ const CaptureModule: React.FC<CaptureModuleProps> = ({
             <Camera size={22} />
           </div>
           <div>
-            <h2 className="text-xl font-black text-slate-800 tracking-tight">第一步：采集教案手稿</h2>
+            <h2 className="text-xl font-black text-slate-800 tracking-tight">第一步：拍下你的手写内容</h2>
             <p className="text-slate-500 text-sm font-medium flex items-center gap-1.5 mt-0.5">
               <Info size={13} className="text-brand-accent" />
-              您可以一次上传多页，AI 会自动串联教学思路
+              支持多张同时上传，AI 自动串联内容
             </p>
           </div>
         </div>
@@ -55,11 +55,11 @@ const CaptureModule: React.FC<CaptureModuleProps> = ({
             <UploadCloud size={44} className="text-brand-primary" strokeWidth={1.5} />
           </div>
           <div className="text-center">
-            <p className="text-lg font-bold text-slate-700">点击这里开始拍摄</p>
-            <p className="text-slate-400 mt-1 text-sm font-medium italic">或是从相册中选择您的手笔照片</p>
+            <p className="text-lg font-bold text-slate-700">点击拍照或上传图片</p>
+            <p className="text-slate-400 mt-1 text-sm font-medium italic">笔记、教案、公式、食谱…… 都可以</p>
           </div>
           <div className="px-6 py-2 bg-brand-primary text-white rounded-full font-bold shadow-lg shadow-brand-primary/20">
-             立即采集
+             选择图片
           </div>
         </div>
       ) : (
@@ -97,7 +97,7 @@ const CaptureModule: React.FC<CaptureModuleProps> = ({
             <div className="bg-white p-4 rounded-full shadow-md group-hover:scale-110 transition-all duration-300">
               <Plus size={32} strokeWidth={3} />
             </div>
-            <span className="font-black text-sm uppercase tracking-tighter">继续添加</span>
+            <span className="font-black text-sm uppercase tracking-tighter">添加更多</span>
           </button>
         </div>
       )}
@@ -128,18 +128,18 @@ const CaptureModule: React.FC<CaptureModuleProps> = ({
           {isProcessing ? (
             <>
               <div className="w-8 h-8 border-4 border-white/30 border-t-white rounded-full animate-spin" />
-              <span>AI 引擎正在深度识别...</span>
+              <span>AI 识别中...</span>
             </>
           ) : (
             <>
               <Sparkles className="animate-pulse text-brand-accent scale-125" size={24} />
-              <span>生成我的电子课件</span>
+              <span>开始 AI 识别</span>
             </>
           )}
         </button>
         <div className="flex items-center gap-2 text-brand-primary/40 font-bold text-sm uppercase tracking-widest">
            <div className="h-[1px] w-8 bg-current" />
-           <span>新一代数学识别引擎</span>
+           <span>AI 智能识别引擎</span>
            <div className="h-[1px] w-8 bg-current" />
         </div>
       </div>
