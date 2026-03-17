@@ -1,0 +1,12 @@
+{
+  "projects": {
+    "default": "lunchbuddy-fee94"
+  },
+  "targets": {
+    "lunchbuddy-fee94": {
+      "hosting": {
+        "math-helper-ag": ["math-helper-ag"]
+      }
+    }
+  }
+}

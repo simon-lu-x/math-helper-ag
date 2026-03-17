@@ -59,12 +59,26 @@ body {
 
 /* KaTeX Adjustments */
 .katex-display {
-  margin: 1.5em 0 !important;
-  padding: 1em;
+  margin-top: 0.75em !important;
+  margin-bottom: 0.25em !important;
+  padding: 0.75em 1em;
   background: rgba(0, 77, 64, 0.03);
   border-radius: 8px;
   overflow-x: auto;
 }
+
+/* 紧缩 display math 块与紧跟的答案空行之间的间距 */
+.math.math-display + p {
+  margin-top: 0.25em !important;
+}
+
+/* 手机端宽公式缩小字号，减少横向溢出 */
+@media (max-width: 768px) {
+  .katex-display .katex {
+    font-size: 0.82em;
+  }
+}
+
 
 /* Friendly Editor */
 .fe-editor { font-family: inherit; color: #374151; }
@@ -124,5 +138,19 @@ body {
 
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.25s ease-out forwards;
+}
+
+/* iOS safe area for bottom bar */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 

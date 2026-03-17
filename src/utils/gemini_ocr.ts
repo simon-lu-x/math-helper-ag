@@ -34,8 +34,10 @@ export const performFaithfulOCR = async (imageUrls: string[]): Promise<string> =
       })
     );
 
-    // Call our own backend proxy
-    const response = await fetch('/api/ocr', {
+    // 生产环境通过 VITE_API_BASE 指向阿里云 FC 触发器地址
+    // 开发环境默认走 /api（vite dev proxy → localhost:3001）
+    const apiBase = import.meta.env.VITE_API_BASE ?? '/api';
+    const response = await fetch(`${apiBase}/ocr`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ images: imagesWithData, prompt }),

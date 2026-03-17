@@ -1,5 +1,5 @@
 const QWEN_API_KEY = import.meta.env.VITE_QWEN_API_KEY;
-const QWEN_BASE_URL = 'https://dashscope.aliyuncs.com/compatible-mode/v1';
+const QWEN_BASE_URL = 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1';
 
 // 复用与 gemini_ocr.ts 相同的 prompt，保证对比结果有可比性
 const OCR_PROMPT = `
@@ -9,8 +9,13 @@ const OCR_PROMPT = `
   CRITICAL RULES:
   1. DO NOT paraphrase, "polish", or "improve" the text in any way.
   2. Keep every comma, period, line break, and unique phrasing exactly as written.
-  3. Convert all mathematical formulas to standard LaTeX format using $...$ for inline and $$...$$ for display.
-  4. For blank fill-in lines (answer blanks), use $\\underline{\\qquad}$ (inside dollar signs so it renders correctly).
+  3. MATH FORMATTING — follow exactly:
+     - Wrap EVERY mathematical expression in $$...$$ placed on its OWN separate line.
+     - NEVER use single-dollar $...$ inline math — not even for single variables.
+     - For variables or short symbols inside a sentence, write them as plain text (e.g. write  x, a, n  without any dollar signs).
+     - For absolute values use \\left| ... \\right|.
+     - For nested absolute values use \\left| ... \\left| ... \\right| ... \\right|.
+  4. For fill-in answer blanks, output exactly: $$\\underline{\\qquad}$$ on its own line.
   5. Output ONLY the raw Markdown content. No conversational filler or explanations.
   6. Use Markdown headers (#, ##) to represent the hierarchy visible in the notes.
 
