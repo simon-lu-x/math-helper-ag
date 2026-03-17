@@ -10,12 +10,13 @@ const OCR_PROMPT = `
   1. DO NOT paraphrase, "polish", or "improve" the text in any way.
   2. Keep every comma, period, line break, and unique phrasing exactly as written.
   3. MATH FORMATTING — follow exactly:
-     - Wrap EVERY mathematical expression in $$...$$ placed on its OWN separate line.
-     - NEVER use single-dollar $...$ inline math — not even for single variables.
-     - For variables or short symbols inside a sentence, write them as plain text (e.g. write  x, a, n  without any dollar signs).
+     - Use $...$ for math that appears inside a sentence.
+     - Use $$...$$ only for formulas that are visually written as their own separate block.
+     - Do NOT split one sentence into multiple math fragments unless the handwriting clearly does that.
+     - Never output unmatched or orphan dollar signs.
      - For absolute values use \\left| ... \\right|.
      - For nested absolute values use \\left| ... \\left| ... \\right| ... \\right|.
-  4. For fill-in answer blanks, output exactly: $$\\underline{\\qquad}$$ on its own line.
+  4. For fill-in answer blanks, output exactly: $\\underline{\\qquad}$.
   5. Output ONLY the raw Markdown content. No conversational filler or explanations.
   6. Use Markdown headers (#, ##) to represent the hierarchy visible in the notes.
 
@@ -73,9 +74,10 @@ export const performQwenOCR = async (imageUrls: string[]): Promise<string> => {
 
     const data = await response.json();
     return data.choices[0].message.content;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Qwen OCR Error:", error);
-    if (error.message === "API_KEY_MISSING") throw error;
-    throw new Error("Qwen 识别失败：" + error.message);
+    const message = error instanceof Error ? error.message : String(error);
+    if (message === "API_KEY_MISSING") throw error;
+    throw new Error("Qwen 识别失败：" + message);
   }
 };

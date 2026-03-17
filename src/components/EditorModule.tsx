@@ -7,30 +7,13 @@ import { FriendlyEditor } from './FriendlyEditor';
 import ChatCorrector from './ChatCorrector';
 import { toPng } from 'html-to-image';
 import jsPDF from 'jspdf';
+import { normalizeMathMarkdown } from '../utils/mathMarkdown';
 
 
 interface EditorModuleProps {
   content: string;
   onUpdateContent: (id: string, newContent: string) => void;
   onRegenerate: () => void;
-}
-
-/**
- * 修正 OCR 输出的渲染问题：
- * 0. 多行 $...$ inline math → $$...$$ display math（remark-math 不支持跨行 inline）
- * 1. $$formula$$  $$= ____$$  → $$formula = ____$$  （合并进同一 display block）
- * 2. $$formula$$  $= ____$    → $$formula = ____$$  （同上）
- * 3. 独立的 $$= ____$$        → $= ____$            （转 inline，不占整块）
- */
-function preprocessContent(raw: string): string {
-  return raw
-    // 把跨行的 $...$ 升级为 $$...$$ (remark-math 不支持多行 inline math)
-    .replace(/(?<!\$)\$((?:[^$]*\n)+[^$]*)\$(?!\$)/g, (_, inner) => `$$\n${inner}\n$$`)
-    // 把紧跟在 display math 后面的答案空行合并进公式块
-    .replace(/\$\$\s*\n+\s*\$\$\s*(=?\s*\\underline\{\\qquad\})\s*\$\$/g, ' $1$$')
-    .replace(/\$\$\s*\n+\s*\$\s*(=?\s*\\underline\{\\qquad\})\s*\$/g, ' $1$$')
-    // 剩余独立的 $$= ____$$ 转为 inline
-    .replace(/\$\$\s*(=?\s*\\underline\{\\qquad\})\s*\$\$/g, '$$$1$');
 }
 
 const EditorModule: React.FC<EditorModuleProps> = ({ content, onUpdateContent, onRegenerate }) => {
@@ -266,14 +249,14 @@ const EditorModule: React.FC<EditorModuleProps> = ({ content, onUpdateContent, o
               <div className="max-w-3xl mx-auto prose prose-slate prose-base sm:prose-lg lg:prose-xl">
                 <ReactMarkdown
                   remarkPlugins={[remarkMath]}
-                  rehypePlugins={[rehypeKatex]}
-                  children={preprocessContent(content)}
+                  rehypePlugins={[[rehypeKatex, { throwOnError: false, errorColor: '#888' }]]}
+                  children={normalizeMathMarkdown(content)}
                   components={{
-                    h1: ({node, ...props}) => <h1 className="text-4xl font-extrabold text-brand-primary text-center mb-12" {...props} />,
-                    h2: ({node, ...props}) => <h2 className="text-2xl font-bold text-slate-800 mt-12 mb-6 border-b-2 border-brand-primary/20 pb-2" {...props} />,
-                    p: ({node, ...props}) => <p className="mb-6 text-slate-700 leading-relaxed font-medium text-lg lg:text-xl" {...props} />,
-                    strong: ({node, ...props}) => <strong className="text-brand-primary font-black bg-brand-primary/5 px-1.5 rounded" {...props} />,
-                    blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-brand-accent bg-brand-accent/5 p-4 rounded-r-xl italic" {...props} />,
+                    h1: (props) => <h1 className="text-4xl font-extrabold text-brand-primary text-center mb-12" {...props} />,
+                    h2: (props) => <h2 className="text-2xl font-bold text-slate-800 mt-12 mb-6 border-b-2 border-brand-primary/20 pb-2" {...props} />,
+                    p: (props) => <p className="mb-6 text-slate-700 leading-relaxed font-medium text-lg lg:text-xl" {...props} />,
+                    strong: (props) => <strong className="text-brand-primary font-black bg-brand-primary/5 px-1.5 rounded" {...props} />,
+                    blockquote: (props) => <blockquote className="border-l-4 border-brand-accent bg-brand-accent/5 p-4 rounded-r-xl italic" {...props} />,
                   }}
                 >
                 </ReactMarkdown>
@@ -360,4 +343,3 @@ const EditorModule: React.FC<EditorModuleProps> = ({ content, onUpdateContent, o
 };
 
 export default EditorModule;
-

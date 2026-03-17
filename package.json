@@ -8,6 +8,7 @@
     "proxy": "node scripts/proxy-server.cjs",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "test": "node --experimental-strip-types --test src/utils/mathMarkdown.test.ts",
     "preview": "vite preview"
   },
   "dependencies": {
