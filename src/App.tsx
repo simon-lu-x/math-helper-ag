@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from './components/Header';
 import CaptureModule from './components/CaptureModule';
 import EditorModule from './components/EditorModule';
@@ -10,6 +10,10 @@ function App() {
   const [images, setImages] = useState<string[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [generatedContent, setGeneratedContent] = useState<string | null>(null);
+
+  useEffect(() => {
+    document.title = '手写宝';
+  }, []);
 
   const handleAddImages = (newImages: string[]) => {
     setImages(prev => [...prev, ...newImages]);

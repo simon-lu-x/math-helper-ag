@@ -115,7 +115,7 @@ const EditorModule: React.FC<EditorModuleProps> = ({ content, onUpdateContent, o
       )}
 
       {/* Mobile Floating Bottom Bar — MUST be outside section (animate-fade-in has transform which breaks fixed positioning) */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden safe-area-bottom">
+      <div className="fixed bottom-3 left-0 right-0 z-50 px-3 lg:hidden safe-area-bottom">
         {/* Expandable Panel */}
         {bottomPanel === 'export' && (
           <div className="bg-slate-800 border-t border-white/10 rounded-t-2xl px-5 pt-4 pb-2 animate-slide-up">
@@ -192,7 +192,7 @@ const EditorModule: React.FC<EditorModuleProps> = ({ content, onUpdateContent, o
         )}
 
         {/* Bottom Button Bar (always visible) */}
-        <div className="bg-slate-800/95 backdrop-blur-md border-t border-white/10 px-4 py-3 flex items-center gap-3">
+        <div className="mx-auto max-w-md bg-slate-800/95 backdrop-blur-md border border-white/10 rounded-2xl px-4 py-3 shadow-2xl flex items-center gap-3">
           <button
             onClick={() => setBottomPanel(bottomPanel === 'edit' ? null : 'edit')}
             className={`flex-1 py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 text-sm transition-all ${
@@ -219,7 +219,7 @@ const EditorModule: React.FC<EditorModuleProps> = ({ content, onUpdateContent, o
         </div>
       </div>
 
-      <section className="max-w-6xl mx-auto my-4 sm:my-10 animate-fade-in px-2 sm:px-4 pb-24 lg:pb-0">
+      <section className="max-w-6xl mx-auto my-4 sm:my-10 animate-fade-in px-2 sm:px-4 pb-32 lg:pb-0">
       <div className="flex flex-col lg:flex-row gap-8 items-start">
         {/* Left Side: Document Preview (Paper Style) */}
         <div className="flex-1 w-full">

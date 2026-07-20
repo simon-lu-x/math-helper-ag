@@ -1,5 +1,5 @@
 import React from 'react';
-import { PenLine } from 'lucide-react';
+
 
 const Header: React.FC = () => {
   return (
@@ -10,7 +10,7 @@ const Header: React.FC = () => {
       
       <div className="max-w-5xl mx-auto px-6 py-2.5 relative flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <PenLine size={24} className="text-white/80" />
+          <img src="/favicon.svg" alt="手写宝 Logo" className="w-7 h-7 rounded-lg shadow-sm" />
           <div className="flex items-center gap-2.5">
             <h1 className="text-lg font-extrabold tracking-tight">手写宝</h1>
             <p className="hidden sm:block text-white/50 text-sm font-medium">把你的任何手写，变成整洁数字文档</p>
